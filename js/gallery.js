@@ -56,27 +56,34 @@ function onImageClick(e) {
 
 
 /* ЗАКРЫТИЕ МОДАЛКИ */
-refs.lightboxCloseBtn.addEventListener('click', () => refs.lightbox.classList.remove('is-open'));
-refs.lightboxCloseBtn.addEventListener('keydown', () => refs.lightbox.classList.remove('is-open'));
-/*ЗАКРЫТИЕ ПО ESC */
+refs.lightboxCloseBtn.addEventListener('click', closeLightBox);
+refs.lightboxCloseBtn.addEventListener('keydown', closeLightBox);
+refs.lightboxOverlay.addEventListener('click', closeLightBox);
 document.addEventListener('keydown', closeLightboxByEsc)
+
+function closeLightBox() {
+  refs.lightbox.classList.remove('is-open');
+  refs.lightboxImage.src = '';
+  refs.lightboxImage.alt = '';
+}
 
 function closeLightboxByEsc (e) {
   if (refs.lightbox.classList.contains('is-open')) {
     if(e.code === 'Escape') {
       refs.lightbox.classList.remove('is-open');
+      refs.lightboxImage.src = '';
+      refs.lightboxImage.alt = '';
     };
   };
-};
+}
 
-const links = document.querySelectorAll('.gallery__link')
-console.log(links);
+/*-----------------------------------------*/
 
 /* МАССИВ ССЫЛОК НА ОРИГИНАЛЫ */
-const arrayOfOriginalImages = [];
-galleryObjs.forEach(item => arrayOfOriginalImages.push(item.original));
 
-console.log(arrayOfOriginalImages);
+const arrayOfOriginalImages = galleryObjs.map(obj => obj.original);
+
+// console.log(arrayOfOriginalImages);
 
 /* ПЕРЕКЛЮЧЕНИЕ КАРТИНОК */
 document.addEventListener('keydown', switchImages);
@@ -87,12 +94,16 @@ function switchImages (e) {
   if (e.key === 'ArrowLeft') {
     newId = currentId - 1;
     if (newId === -1) {
-      newId = arrayOfOriginalImages.length - 1;
+      closeLightBox();
+      return console.log('это самая первая картинка, чтобы посмотреть всю галарею, щелкните по первой картинке и листайте вправо')
+      // newId = arrayOfOriginalImages.length - 1;
     };
   } else if (e.key === 'ArrowRight') {
     newId = currentId + 1;
     if (newId === arrayOfOriginalImages.length) {
-      newId = 0;
+      closeLightBox();
+      return console.log('вы просмотрели всю галерею')
+      // newId = 0;
     } 
   } else {
     return;
