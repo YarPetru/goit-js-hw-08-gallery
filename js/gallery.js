@@ -68,12 +68,12 @@ function closeLightBox() {
 }
 
 function closeLightboxByEsc (e) {
-  if (refs.lightbox.classList.contains('is-open')) {
+  // if (refs.lightbox.classList.contains('is-open')) {
     if(e.code === 'Escape') {
       refs.lightbox.classList.remove('is-open');
       refs.lightboxImage.src = '';
       refs.lightboxImage.alt = '';
-    };
+    // };
   };
 }
 
